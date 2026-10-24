@@ -1,0 +1,230 @@
+-- CONFIG
+local PASS_LINK = "https://link4m.org/ofUPs"
+local EXPECTED_KEY = "Free_52573618"
+local SCRIPT_URL = "https://raw.githubusercontent.com/kairobloc/stealanegg/refs/heads/main/chillihubv7.lua"
+
+-- SERVICES
+local CoreGui = game:GetService("CoreGui")
+local TweenService = game:GetService("TweenService")
+local UserInputService = game:GetService("UserInputService")
+
+pcall(function()
+    if CoreGui:FindFirstChild("FoxKeySystem") then
+        CoreGui["FoxKeySystem"]:Destroy()
+    end
+end)
+
+-- GUI
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Name = "FoxKeySystem"
+ScreenGui.ResetOnSpawn = false
+ScreenGui.Parent = CoreGui
+
+-- MAIN FRAME
+local Main = Instance.new("Frame")
+Main.Parent = ScreenGui
+Main.Size = UDim2.new(0, 440, 0, 310)
+Main.Position = UDim2.new(0.5, -220, 0.5, -155)
+Main.BackgroundColor3 = Color3.fromRGB(15, 15, 15) -- Màu nền đen chủ đạo
+Main.BorderSizePixel = 0
+Main.Active = true
+Main.ClipsDescendants = true
+
+Instance.new("UICorner", Main).CornerRadius = UDim.new(0, 25)
+
+-- BACKGROUND PATTERN (Hình ảnh họa tiết)
+local BackgroundPattern = Instance.new("ImageLabel")
+BackgroundPattern.Parent = Main
+BackgroundPattern.Size = UDim2.new(1, 0, 1, 0)
+BackgroundPattern.Position = UDim2.new(0, 0, 0, 0)
+BackgroundPattern.BackgroundTransparency = 1
+BackgroundPattern.Image = "rbxassetid://12501061320"
+BackgroundPattern.ImageColor3 = Color3.fromRGB(0, 80, 20) -- Họa tiết chuyển sang tông xanh lá tối
+BackgroundPattern.ImageTransparency = 0.4
+BackgroundPattern.ScaleType = Enum.ScaleType.Crop
+BackgroundPattern.ZIndex = 0
+
+-- UI STROKE (Viền Menu bo tròn màu xanh lá)
+local Stroke = Instance.new("UIStroke")
+Stroke.Parent = Main
+Stroke.Thickness = 3
+Stroke.Color = Color3.fromRGB(0, 255, 120) -- Viền xanh lá phát sáng
+
+-- CENTER DARK CONTAINER (Khung nền tối mờ ở giữa)
+local CenterContainer = Instance.new("Frame")
+CenterContainer.Parent = Main
+CenterContainer.Size = UDim2.new(0.88, 0, 0.72, 0)
+CenterContainer.Position = UDim2.new(0.06, 0, 0.22, 0)
+CenterContainer.BackgroundColor3 = Color3.fromRGB(5, 5, 5)
+CenterContainer.BackgroundTransparency = 0.5
+CenterContainer.BorderSizePixel = 0
+CenterContainer.ZIndex = 1
+Instance.new("UICorner", CenterContainer).CornerRadius = UDim.new(0, 18)
+
+-- TITLE ("CloverHub")
+local Title = Instance.new("TextLabel")
+Title.Parent = Main
+Title.BackgroundTransparency = 1
+Title.Size = UDim2.new(1, 0, 0, 50)
+Title.Position = UDim2.new(0, 0, 0, 15)
+Title.Font = Enum.Font.GothamBlack
+Title.Text = "Chilli Hub V7"
+Title.TextColor3 = Color3.fromRGB(240, 255, 240) -- Màu chữ trắng ánh xanh
+Title.TextSize = 38
+Title.ZIndex = 2
+
+-- Hiệu ứng phát sáng cho Title
+local TitleStroke = Instance.new("UIStroke")
+TitleStroke.Parent = Title
+TitleStroke.Thickness = 2
+TitleStroke.Color = Color3.fromRGB(0, 255, 100) -- Glow màu xanh lá
+
+-- KEYBOX TEXT LABEL
+local KeyBoxLabel = Instance.new("TextLabel")
+KeyBoxLabel.Parent = CenterContainer
+KeyBoxLabel.BackgroundTransparency = 1
+KeyBoxLabel.Size = UDim2.new(1, 0, 0, 20)
+KeyBoxLabel.Position = UDim2.new(0, 0, 0, 5)
+KeyBoxLabel.Font = Enum.Font.GothamBold
+KeyBoxLabel.Text = "KeyBox"
+KeyBoxLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+KeyBoxLabel.TextSize = 14
+KeyBoxLabel.ZIndex = 3
+
+-- INPUT BOX (Hộp nhập mã)
+local KeyBox = Instance.new("TextBox")
+KeyBox.Parent = CenterContainer
+KeyBox.Size = UDim2.new(0.9, 0, 0, 38)
+KeyBox.Position = UDim2.new(0.05, 0, 0, 25)
+KeyBox.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+KeyBox.BackgroundTransparency = 0.3
+KeyBox.PlaceholderText = "Nhập mã Key vào đây..."
+KeyBox.Text = ""
+KeyBox.Font = Enum.Font.GothamBold
+KeyBox.TextSize = 16
+KeyBox.TextColor3 = Color3.fromRGB(255, 255, 255)
+KeyBox.PlaceholderColor3 = Color3.fromRGB(150, 150, 150)
+KeyBox.BorderSizePixel = 0
+KeyBox.ZIndex = 3
+Instance.new("UICorner", KeyBox).CornerRadius = UDim.new(0, 12)
+
+local KeyBoxStroke = Instance.new("UIStroke")
+KeyBoxStroke.Parent = KeyBox
+KeyBoxStroke.Thickness = 1.5
+KeyBoxStroke.Color = Color3.fromRGB(0, 150, 70) -- Viền hộp nhập màu xanh lá mờ
+
+-- GET KEY BUTTON (Xanh lá sẫm)
+local GetKey = Instance.new("TextButton")
+GetKey.Parent = CenterContainer
+GetKey.Size = UDim2.new(0.9, 0, 0, 38)
+GetKey.Position = UDim2.new(0.05, 0, 0, 75)
+GetKey.BackgroundColor3 = Color3.fromRGB(20, 100, 50)
+GetKey.Text = "SAO CHÉP LINK GET KEY"
+GetKey.Font = Enum.Font.GothamBlack
+GetKey.TextSize = 14
+GetKey.TextColor3 = Color3.fromRGB(255, 255, 255)
+GetKey.BorderSizePixel = 0
+GetKey.ZIndex = 3
+Instance.new("UICorner", GetKey).CornerRadius = UDim.new(0, 12)
+
+local GetKeyStroke = Instance.new("UIStroke")
+GetKeyStroke.Parent = GetKey
+GetKeyStroke.Thickness = 1.5
+GetKeyStroke.Color = Color3.fromRGB(50, 220, 120)
+
+-- CHECK KEY BUTTON (Xanh lá tươi)
+local CheckKey = Instance.new("TextButton")
+CheckKey.Parent = CenterContainer
+CheckKey.Size = UDim2.new(0.9, 0, 0, 38)
+CheckKey.Position = UDim2.new(0.05, 0, 0, 125)
+CheckKey.BackgroundColor3 = Color3.fromRGB(0, 170, 70)
+CheckKey.Text = "XÁC NHẬN KEY"
+CheckKey.Font = Enum.Font.GothamBlack
+CheckKey.TextSize = 14
+CheckKey.TextColor3 = Color3.fromRGB(255, 255, 255)
+CheckKey.BorderSizePixel = 0
+CheckKey.ZIndex = 3
+Instance.new("UICorner", CheckKey).CornerRadius = UDim.new(0, 12)
+
+local CheckKeyStroke = Instance.new("UIStroke")
+CheckKeyStroke.Parent = CheckKey
+CheckKeyStroke.Thickness = 1.5
+CheckKeyStroke.Color = Color3.fromRGB(80, 255, 150)
+
+-- INFO TEXT
+local Info = Instance.new("TextLabel")
+Info.Parent = CenterContainer
+Info.BackgroundTransparency = 1
+Info.Size = UDim2.new(1, 0, 0, 25)
+Info.Position = UDim2.new(0, 0, 0, 175)
+Info.Font = Enum.Font.GothamBold
+Info.TextSize = 16
+Info.TextColor3 = Color3.fromRGB(150, 255, 180)
+Info.Text = ""
+Info.ZIndex = 3
+
+-- DRAG SYSTEM
+local dragging = false
+local dragStart
+local startPos
+
+Main.InputBegan:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+        dragging = true
+        dragStart = input.Position
+        startPos = Main.Position
+        
+        input.Changed:Connect(function()
+            if input.UserInputState == Enum.UserInputState.End then
+                dragging = false
+            end
+        end)
+    end
+end)
+
+UserInputService.InputChanged:Connect(function(input)
+    if dragging and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then
+        local delta = input.Position - dragStart
+        Main.Position = UDim2.new(
+            startPos.X.Scale,
+            startPos.X.Offset + delta.X,
+            startPos.Y.Scale,
+            startPos.Y.Offset + delta.Y
+        )
+    end
+end)
+
+-- COPY LINK ACTION
+GetKey.MouseButton1Click:Connect(function()
+    if setclipboard then
+        setclipboard(PASS_LINK)
+    end
+    GetKey.Text = "ĐÃ SAO CHÉP!"
+    task.wait(1.2)
+    GetKey.Text = "SAO CHÉP LINK GET KEY"
+end)
+
+-- CHECK KEY ACTION
+CheckKey.MouseButton1Click:Connect(function()
+    if string.lower(KeyBox.Text) == string.lower(EXPECTED_KEY) then
+        CheckKey.Text = "KEY ĐÚNG!"
+        CheckKey.BackgroundColor3 = Color3.fromRGB(0, 255, 120)
+        task.wait(1)
+        ScreenGui:Destroy()
+        loadstring(game:HttpGet(SCRIPT_URL))()
+    else
+        CheckKey.Text = "KEY SAI!"
+        CheckKey.BackgroundColor3 = Color3.fromRGB(255, 70, 70)
+        task.wait(1)
+        CheckKey.Text = "XÁC NHẬN KEY"
+        CheckKey.BackgroundColor3 = Color3.fromRGB(0, 170, 70) -- Reset về lại màu xanh lá ban đầu khi sai
+    end
+end)
+
+-- OPEN EFFECT
+Main.Size = UDim2.new(0, 0, 0, 0)
+TweenService:Create(
+    Main,
+    TweenInfo.new(0.4, Enum.EasingStyle.Back, Enum.EasingDirection.Out),
+    { Size = UDim2.new(0, 440, 0, 310) }
+):Play()
